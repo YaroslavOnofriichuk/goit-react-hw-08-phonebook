@@ -20,7 +20,7 @@ export function ContactList() {
 
   return (
     <>
-      <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <Box sx={{ width: '100%', bgcolor: 'background.default', ml: '7px' }}>
         <nav aria-label="main mailbox folders">
           <List>
             {filterContact() &&

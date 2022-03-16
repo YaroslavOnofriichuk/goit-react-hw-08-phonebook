@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import {
   useAddContactMutation,
   useGetContactsQuery,
@@ -8,11 +7,12 @@ import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
 export function ContactForm() {
   const [addCcontact] = useAddContactMutation();
   const { data } = useGetContactsQuery();
-  const [errors, setIerrors] = useState({
+  const [errors, setErrors] = useState({
     name: false,
     number: false,
   });
@@ -33,12 +33,12 @@ export function ContactForm() {
         contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
       )
     ) {
-      window.alert(`${newContact.name} is already in contacts`);
+      toast.error(`${newContact.name} is already in contacts`);
     } else if (
       newContact.name.trim() === '' ||
       newContact.phone.trim() === ''
     ) {
-      window.alert(`is already in contacts`);
+      toast.error(`The field cannot be empty`);
     } else {
       addCcontact(newContact);
     }
@@ -50,7 +50,7 @@ export function ContactForm() {
     const value = e.target.value;
     const field = e.target.name;
     if (field === 'name') {
-      setIerrors(previousState => {
+      setErrors(previousState => {
         return { ...previousState, name: false };
       });
 
@@ -59,15 +59,21 @@ export function ContactForm() {
       ).test(value);
 
       if (!reg) {
-        setIerrors(previousState => {
+        setErrors(previousState => {
           return {
             ...previousState,
             name: true,
           };
         });
+        toast.error(
+          "Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan",
+          {
+            id: 'name',
+          }
+        );
       }
     } else if (field === 'number') {
-      setIerrors(previousState => {
+      setErrors(previousState => {
         return { ...previousState, number: false };
       });
 
@@ -76,61 +82,60 @@ export function ContactForm() {
       ).test(value);
 
       if (!reg) {
-        setIerrors(previousState => {
+        setErrors(previousState => {
           return {
             ...previousState,
             number: true,
           };
         });
+        toast.error(
+          'Phone number must be digits and can contain spaces, dashes, parentheses',
+          {
+            id: 'number',
+          }
+        );
       }
     }
   };
 
-  const formId = nanoid();
-
   return (
-    <>
-      <Box
-        component="form"
-        sx={{
-          '& > :not(style)': { m: 1, width: '100%' },
-        }}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
-        htmlFor={formId}
-      >
-        <TextField
-          required
-          error={Boolean(errors?.name)}
-          id="outlined-basic"
-          label="Name"
-          variant="outlined"
-          onChange={handleChange}
-          name="name"
-          // helperText={errors?.name}
-        />
-        <TextField
-          required
-          error={Boolean(errors?.number)}
-          id="outlined-basic"
-          label="Number"
-          variant="outlined"
-          onChange={handleChange}
-          name="number"
-          // helperText={errors?.number}
-        />
+    <Box
+      component="form"
+      sx={{
+        '& > :not(style)': { m: 1, width: '100%' },
+      }}
+      noValidate
+      autoComplete="off"
+      onSubmit={handleSubmit}
+    >
+      <TextField
+        required
+        error={Boolean(errors?.name)}
+        id="outlined-basic-name"
+        label="Name"
+        variant="outlined"
+        onChange={handleChange}
+        name="name"
+      />
+      <TextField
+        required
+        error={Boolean(errors?.number)}
+        id="outlined-basic-number"
+        label="Number"
+        variant="outlined"
+        onChange={handleChange}
+        name="number"
+      />
 
-        <Stack spacing={2}>
-          <Button
-            variant="contained"
-            type="submit"
-            disabled={Boolean(errors?.name) || Boolean(errors?.number)}
-          >
-            Add contact
-          </Button>
-        </Stack>
-      </Box>
-    </>
+      <Stack spacing={2} alignItems="center">
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={Boolean(errors?.name) || Boolean(errors?.number)}
+        >
+          Add contact
+        </Button>
+      </Stack>
+    </Box>
   );
 }

@@ -17,7 +17,7 @@ export const ContactListItem = ({ contact }) => {
     <ListItem disablePadding key={contact.id}>
       <ListItemButton>
         <ListItemText primary={`${contact.name}: ${contact.phone}`} />
-        <Stack spacing={2}>
+        <Stack spacing={2} alignItems="center">
           <Button
             variant="contained"
             type="button"

@@ -11,10 +11,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
-
-const pages = ['contacts', 'login', 'register'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -81,11 +79,15 @@ export const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map(page => (
-                <MenuItem key={page} onClick={() => handleCloseNavMenu(page)}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={() => handleCloseNavMenu('contacts')}>
+                <Typography textAlign="center">contacts</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => handleCloseNavMenu('login')}>
+                <Typography textAlign="center">login</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => handleCloseNavMenu('register')}>
+                <Typography textAlign="center">register</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <Typography
@@ -97,15 +99,24 @@ export const ResponsiveAppBar = () => {
             PHONE BOOK
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map(page => (
-              <Button
-                key={page}
-                onClick={() => handleCloseNavMenu(page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              onClick={() => handleCloseNavMenu('contacts')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              contacts
+            </Button>
+            <Button
+              onClick={() => handleCloseNavMenu('login')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              login
+            </Button>
+            <Button
+              onClick={() => handleCloseNavMenu('register')}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              register
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -130,18 +141,19 @@ export const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map(setting => (
-                <MenuItem
-                  key={setting}
-                  onClick={() => handleCloseUserMenu(setting)}
-                >
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={() => handleCloseUserMenu('Email')}>
+                <Typography textAlign="center">Email</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => handleCloseUserMenu('Logout')}>
+                <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
       </Container>
+      {/* <Box sx={{ width: '100%' }}>
+        <LinearProgress />
+      </Box> */}
     </AppBar>
   );
 };
