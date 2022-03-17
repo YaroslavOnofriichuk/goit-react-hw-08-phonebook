@@ -7,14 +7,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 
-export const PasswordInput = () => {
+export const PasswordInput = ({ handleChangePassword }) => {
   const [values, setValues] = React.useState({
     password: '',
     showPassword: false,
   });
 
-  const handleChangePassword = prop => event => {
+  const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });
+    handleChangePassword(event.target.value);
   };
 
   const handleClickShowPassword = () => {
@@ -37,7 +38,7 @@ export const PasswordInput = () => {
         value={values.password}
         name="password"
         required
-        onChange={handleChangePassword('password')}
+        onChange={handleChange('password')}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
