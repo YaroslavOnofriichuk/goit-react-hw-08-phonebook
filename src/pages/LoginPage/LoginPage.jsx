@@ -6,6 +6,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
+import { useLoginUserMutation } from '../../redux/authApi';
+import { setUser, setToken } from '../../redux/authSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -14,8 +18,11 @@ export const LoginPage = () => {
     email: false,
     password: false,
   });
+  const [loginUser] = useLoginUserMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -53,10 +60,24 @@ export const LoginPage = () => {
       });
       toast.error('The Pasword field cannot be empty');
     } else {
-      console.log({
-        email,
-        password,
-      });
+      try {
+        const user = await loginUser({
+          email,
+          password,
+        });
+
+        if (user.data) {
+          dispatch(setUser(user.data.user));
+          dispatch(setToken(user.data.token));
+
+          toast.success(`User ${user.data.user.name} logged in`);
+          navigate('contacts');
+        } else {
+          toast.error('User not logged in');
+        }
+      } catch (err) {
+        console.log(err);
+      }
 
       setEmail('');
       setPassword('');

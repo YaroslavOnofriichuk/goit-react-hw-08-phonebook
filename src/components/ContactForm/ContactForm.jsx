@@ -25,7 +25,7 @@ export function ContactForm() {
 
     const newContact = {
       name: newName,
-      phone: newNumber,
+      number: newNumber,
     };
 
     if (
@@ -36,7 +36,7 @@ export function ContactForm() {
       toast.error(`${newContact.name} is already in contacts`);
     } else if (
       newContact.name.trim() === '' ||
-      newContact.phone.trim() === ''
+      newContact.number.trim() === ''
     ) {
       toast.error(`The field cannot be empty`);
     } else {

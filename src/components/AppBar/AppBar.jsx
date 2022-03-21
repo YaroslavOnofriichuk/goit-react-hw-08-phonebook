@@ -7,34 +7,25 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import LinearProgress from '@mui/material/LinearProgress';
+import { ThemeSwitch } from '../ThemeSwitch/ThemeSwitch';
+import { UserMenu } from '../UserMenu/UserMenu';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const user = useSelector(state => state.auth.user);
   const navigate = useNavigate();
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = event => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = page => {
     setAnchorElNav(null);
-    navigate(`${page}`);
-  };
-
-  const handleCloseUserMenu = setting => {
-    setAnchorElUser(null);
-    navigate(`${setting}`);
+    navigate(page);
   };
 
   return (
@@ -119,36 +110,9 @@ export const ResponsiveAppBar = () => {
             </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="avatar" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={() => handleCloseUserMenu('Email')}>
-                <Typography textAlign="center">Email</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => handleCloseUserMenu('Logout')}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+          <ThemeSwitch />
+
+          {user && <UserMenu />}
         </Toolbar>
       </Container>
       {/* <Box sx={{ width: '100%' }}>

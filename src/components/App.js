@@ -6,10 +6,17 @@ import { MySkeleton } from './Skeleton/Skeleton';
 import { ThemeProvider } from '@mui/material/styles';
 import { Toaster } from 'react-hot-toast';
 import { lightTheme, darkTheme } from './Theme/Theme';
+import { useSelector } from 'react-redux';
 
 const ContactsPage = lazy(() =>
   import('../pages/ContactsPage/ContactsPage').then(module => ({
     default: module.ContactsPage,
+  }))
+);
+
+const ContactPage = lazy(() =>
+  import('../pages/ContactPage/ContactPage').then(module => ({
+    default: module.ContactPage,
   }))
 );
 const LoginPage = lazy(() =>
@@ -25,18 +32,20 @@ const RegisterPage = lazy(() =>
 
 export function App() {
   const { pathname } = useLocation();
+  const theme = useSelector(state => state.theme.theme);
 
   return (
     <>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={theme ? lightTheme : darkTheme}>
         <CssBaseline />
         <ResponsiveAppBar />
         <Suspense fallback={<MySkeleton pathname={pathname} />}>
           <Routes>
-            <Route index path="contacts" element={<ContactsPage />} />
-            <Route path="login" element={<LoginPage />} />
+            <Route path="contacts" element={<ContactsPage />} />
+            <Route path="contacts/:contactId" element={<ContactPage />} />
+            <Route index path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
-            <Route path="*" element={<ContactsPage />} />
+            <Route path="*" element={<LoginPage />} />
           </Routes>
         </Suspense>
         <Toaster />

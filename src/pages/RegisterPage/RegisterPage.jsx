@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -7,7 +9,8 @@ import Typography from '@mui/material/Typography';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { NameInput } from '../../components/NameInput/NameInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
-import { useRegisterUserMutation } from '../../redux/userApi';
+import { useRegisterUserMutation } from '../../redux/authApi';
+import { setUser, setToken } from '../../redux/authSlice';
 
 export const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -18,9 +21,11 @@ export const RegisterPage = () => {
     email: false,
     password: false,
   });
-  // const [registerUser] = useRegisterUserMutation();
+  const [registerUser] = useRegisterUserMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -75,11 +80,24 @@ export const RegisterPage = () => {
       });
       toast.error('Password must be longer than 7 characters');
     } else {
-      console.log({
-        name,
-        email,
-        password,
-      });
+      try {
+        const user = await registerUser({
+          name,
+          email,
+          password,
+        });
+        if (user.data) {
+          dispatch(setUser(user.data.user));
+          dispatch(setToken(user.data.token));
+
+          toast.success(`User ${user.data.user.name} created`);
+          navigate('contacts');
+        } else {
+          toast.error('User not created');
+        }
+      } catch (err) {
+        console.log(err);
+      }
 
       setName('');
       setEmail('');
