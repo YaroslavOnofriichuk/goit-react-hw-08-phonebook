@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import LinearProgress from '@mui/material/LinearProgress';
 import { ThemeSwitch } from '../ThemeSwitch/ThemeSwitch';
 import { UserMenu } from '../UserMenu/UserMenu';
 import { useSelector } from 'react-redux';
@@ -16,7 +17,8 @@ import { useNavigate } from 'react-router-dom';
 
 export const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const user = useSelector(state => state.auth.user);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const isLoading = useSelector(state => state.auth.isLoading);
   const navigate = useNavigate();
 
   const handleOpenNavMenu = event => {
@@ -70,15 +72,21 @@ export const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <MenuItem onClick={() => handleCloseNavMenu('contacts')}>
-                <Typography textAlign="center">contacts</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => handleCloseNavMenu('login')}>
-                <Typography textAlign="center">login</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => handleCloseNavMenu('register')}>
-                <Typography textAlign="center">register</Typography>
-              </MenuItem>
+              {isLoggedIn && (
+                <MenuItem onClick={() => handleCloseNavMenu('contacts')}>
+                  <Typography textAlign="center">contacts</Typography>
+                </MenuItem>
+              )}
+              {!isLoggedIn && (
+                <MenuItem onClick={() => handleCloseNavMenu('login')}>
+                  <Typography textAlign="center">login</Typography>
+                </MenuItem>
+              )}
+              {!isLoggedIn && (
+                <MenuItem onClick={() => handleCloseNavMenu('register')}>
+                  <Typography textAlign="center">register</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
           <Typography
@@ -90,34 +98,42 @@ export const ResponsiveAppBar = () => {
             PHONE BOOK
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              onClick={() => handleCloseNavMenu('contacts')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              contacts
-            </Button>
-            <Button
-              onClick={() => handleCloseNavMenu('login')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              login
-            </Button>
-            <Button
-              onClick={() => handleCloseNavMenu('register')}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              register
-            </Button>
+            {isLoggedIn && (
+              <Button
+                onClick={() => handleCloseNavMenu('contacts')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                contacts
+              </Button>
+            )}
+            {!isLoggedIn && (
+              <Button
+                onClick={() => handleCloseNavMenu('login')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                login
+              </Button>
+            )}
+            {!isLoggedIn && (
+              <Button
+                onClick={() => handleCloseNavMenu('register')}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                register
+              </Button>
+            )}
           </Box>
 
           <ThemeSwitch />
 
-          {user && <UserMenu />}
+          {isLoggedIn && <UserMenu />}
         </Toolbar>
       </Container>
-      {/* <Box sx={{ width: '100%' }}>
-        <LinearProgress />
-      </Box> */}
+      {isLoading && (
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress />
+        </Box>
+      )}
     </AppBar>
   );
 };

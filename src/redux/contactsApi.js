@@ -44,11 +44,11 @@ export const contactsApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: 'Contacts', id }],
     }),
     updateContact: builder.mutation({
-      query: (id, data) => {
+      query: ({ id, ...contact }) => {
         return {
           url: `contacts/${id}`,
           method: 'PATCH',
-          body: data,
+          body: contact,
         };
       },
       invalidatesTags: (result, error, id) => [{ type: 'Contacts', id }],

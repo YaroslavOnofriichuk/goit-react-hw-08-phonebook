@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import { ContactListItem } from '../ContactListItem/ContactListItem';
@@ -7,10 +8,15 @@ import { useGetContactsQuery } from '../../redux/contactsApi';
 export function ContactList() {
   const filter = useSelector(state => state.filter.filter);
   const { data } = useGetContactsQuery();
+  const [contacts, setContacts] = useState(null);
+
+  useEffect(() => {
+    setContacts(data);
+  }, [data]);
 
   const filterContact = () => {
     try {
-      return data.filter(contact => {
+      return contacts.filter(contact => {
         return contact.name.toLowerCase().includes(filter);
       });
     } catch {

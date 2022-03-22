@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
 import { useLoginUserMutation } from '../../redux/authApi';
-import { setUser, setToken } from '../../redux/authSlice';
+import { setIsLoggedIn, setToken, setUser } from '../../redux/authSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -68,10 +68,11 @@ export const LoginPage = () => {
 
         if (user.data) {
           dispatch(setUser(user.data.user));
+          dispatch(setIsLoggedIn(true));
           dispatch(setToken(user.data.token));
 
           toast.success(`User ${user.data.user.name} logged in`);
-          navigate('contacts');
+          navigate('/contacts');
         } else {
           toast.error('User not logged in');
         }

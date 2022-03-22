@@ -7,6 +7,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { Toaster } from 'react-hot-toast';
 import { lightTheme, darkTheme } from './Theme/Theme';
 import { useSelector } from 'react-redux';
+import { PrivateRoute } from './PrivateRoute/PrivateRoute';
+import { LimitedRoute } from './LimitedRoute/LimitedRoute';
 
 const ContactsPage = lazy(() =>
   import('../pages/ContactsPage/ContactsPage').then(module => ({
@@ -41,10 +43,41 @@ export function App() {
         <ResponsiveAppBar />
         <Suspense fallback={<MySkeleton pathname={pathname} />}>
           <Routes>
-            <Route path="contacts" element={<ContactsPage />} />
-            <Route path="contacts/:contactId" element={<ContactPage />} />
-            <Route index path="login" element={<LoginPage />} />
-            <Route path="register" element={<RegisterPage />} />
+            <Route
+              path="contacts"
+              element={
+                <PrivateRoute>
+                  <ContactsPage />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="contacts/:contactId"
+              element={
+                <PrivateRoute>
+                  <ContactPage />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              index
+              path="login"
+              element={
+                <LimitedRoute>
+                  <LoginPage />
+                </LimitedRoute>
+              }
+            />
+            <Route
+              path="register"
+              element={
+                <LimitedRoute>
+                  <RegisterPage />
+                </LimitedRoute>
+              }
+            />
             <Route path="*" element={<LoginPage />} />
           </Routes>
         </Suspense>

@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { toast } from 'react-hot-toast';
 import { useLogOutUserMutation } from '../../redux/authApi';
-import { setUser, setToken } from '../../redux/authSlice';
+import { setUser, setToken, setIsLoggedIn } from '../../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ export const UserMenu = () => {
   const [logOut] = useLogOutUserMutation();
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
-  const email = useSelector(state => state.auth.user.email);
+  const email = useSelector(state => state.auth?.user?.email);
   const navigate = useNavigate();
 
   const handleCloseUserMenu = () => {
@@ -31,8 +31,9 @@ export const UserMenu = () => {
       const user = await logOut(token);
 
       if (user.data) {
-        dispatch(setUser(null));
+        dispatch(setUser({}));
         dispatch(setToken(null));
+        dispatch(setIsLoggedIn(false));
 
         toast.success(`User is logged out`);
         navigate('login');
