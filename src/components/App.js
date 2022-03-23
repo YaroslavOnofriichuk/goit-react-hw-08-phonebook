@@ -44,6 +44,7 @@ export function App() {
         <Suspense fallback={<MySkeleton pathname={pathname} />}>
           <Routes>
             <Route
+              index
               path="contacts"
               element={
                 <PrivateRoute>
@@ -62,7 +63,6 @@ export function App() {
             />
 
             <Route
-              index
               path="login"
               element={
                 <LimitedRoute>
@@ -78,7 +78,7 @@ export function App() {
                 </LimitedRoute>
               }
             />
-            <Route path="*" element={<LoginPage />} />
+            <Route path="*" element={<ContactsPage />} />
           </Routes>
         </Suspense>
         <Toaster />

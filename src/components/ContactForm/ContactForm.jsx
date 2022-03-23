@@ -6,16 +6,23 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIsLoading } from '../../redux/authSlice';
 import { toast } from 'react-hot-toast';
 
 export function ContactForm() {
   const [addCcontact] = useAddContactMutation();
-  const { data } = useGetContactsQuery();
+  const dispatch = useDispatch();
+  const { data, isFetching } = useGetContactsQuery();
   const [errors, setErrors] = useState({
     name: false,
     number: false,
   });
+
+  useEffect(() => {
+    dispatch(setIsLoading(isFetching));
+  }, [dispatch, isFetching]);
 
   const handleSubmit = e => {
     e.preventDefault();

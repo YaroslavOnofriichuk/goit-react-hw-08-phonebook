@@ -1,18 +1,24 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import { ContactListItem } from '../ContactListItem/ContactListItem';
 import { useGetContactsQuery } from '../../redux/contactsApi';
+import { setIsLoading } from '../../redux/authSlice';
 
 export function ContactList() {
   const filter = useSelector(state => state.filter.filter);
-  const { data } = useGetContactsQuery();
-  const [contacts, setContacts] = useState(null);
+  const { data, isFetching } = useGetContactsQuery();
+  const [contacts, setContacts] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setContacts(data);
-  }, [data]);
+    dispatch(setIsLoading(isFetching));
+
+    if (data) {
+      setContacts(data);
+    }
+  }, [data, dispatch, isFetching]);
 
   const filterContact = () => {
     try {

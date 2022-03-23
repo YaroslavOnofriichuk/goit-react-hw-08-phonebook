@@ -129,10 +129,13 @@ export const ResponsiveAppBar = () => {
           {isLoggedIn && <UserMenu />}
         </Toolbar>
       </Container>
-      {isLoading && (
+
+      {isLoading ? (
         <Box sx={{ width: '100%' }}>
           <LinearProgress />
         </Box>
+      ) : (
+        <Box sx={{ width: '100%', height: '5px' }} />
       )}
     </AppBar>
   );

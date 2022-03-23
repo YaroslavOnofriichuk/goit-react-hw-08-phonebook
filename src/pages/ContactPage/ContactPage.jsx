@@ -9,22 +9,39 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import { setIsLoading } from '../../redux/authSlice';
+import { useDispatch } from 'react-redux';
 
 export const ContactPage = () => {
   const [updateContact] = useUpdateContactMutation();
-  const { data } = useGetContactsQuery();
+  const { data, error, isLoading, isFetching, status } = useGetContactsQuery();
   const { contactId } = useParams();
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState({
     name: false,
     number: false,
   });
-  const [contact, setContact] = useState(
-    data.find(contact => contact.id === contactId)
-  );
+  const [contact, setContact] = useState({});
+  const [contacts, setContacts] = useState([]);
 
-  console.log('contact-1', contact);
+  // console.log('error', error);
+  // console.log('isLoading', isLoading);
+  // console.log('isFetching', isFetching);
+  // console.log('status', status);
+
+  // console.log('contact.name', contact.name);
+  // console.log('contact.number', contact.number);
+
+  useEffect(() => {
+    dispatch(setIsLoading(isFetching));
+
+    if (data) {
+      setContacts(data);
+      setContact(data.find(contact => contact.id === contactId));
+    }
+  }, [contactId, data, dispatch, isFetching]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -39,7 +56,7 @@ export const ContactPage = () => {
     };
 
     if (
-      data.find(
+      contacts.find(
         contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
       )
     ) {
@@ -127,26 +144,30 @@ export const ContactPage = () => {
             autoComplete="off"
             onSubmit={handleSubmit}
           >
-            <TextField
-              required
-              error={Boolean(errors?.name)}
-              id="outlined-basic-name"
-              label="Name"
-              defaultValue={contact.name}
-              variant="outlined"
-              onChange={handleChange}
-              name="name"
-            />
-            <TextField
-              required
-              error={Boolean(errors?.number)}
-              id="outlined-basic-number"
-              label="Number"
-              defaultValue={contact.number}
-              variant="outlined"
-              onChange={handleChange}
-              name="number"
-            />
+            {contact.name && (
+              <TextField
+                required
+                error={Boolean(errors?.name)}
+                id="outlined-basic-name"
+                label="Name"
+                defaultValue={contact.name}
+                variant="outlined"
+                onChange={handleChange}
+                name="name"
+              />
+            )}
+            {contact.number && (
+              <TextField
+                required
+                error={Boolean(errors?.number)}
+                id="outlined-basic-number"
+                label="Number"
+                defaultValue={contact.number}
+                variant="outlined"
+                onChange={handleChange}
+                name="number"
+              />
+            )}
 
             <Stack spacing={2} alignItems="center">
               <Button
