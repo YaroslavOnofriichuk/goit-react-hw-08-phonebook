@@ -1,5 +1,6 @@
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import PropTypes from 'prop-types';
 
 export const MySkeleton = ({ pathname }) => {
   return (
@@ -42,4 +43,8 @@ export const MySkeleton = ({ pathname }) => {
       )}
     </Stack>
   );
+};
+
+MySkeleton.propTypes = {
+  children: PropTypes.string,
 };

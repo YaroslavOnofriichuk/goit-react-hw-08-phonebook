@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { setIsLoading } from '../../redux/authSlice';
@@ -16,23 +16,16 @@ import { useDispatch } from 'react-redux';
 
 export const ContactPage = () => {
   const [updateContact] = useUpdateContactMutation();
-  const { data, error, isLoading, isFetching, status } = useGetContactsQuery();
+  const { data, isFetching } = useGetContactsQuery();
   const { contactId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({
     name: false,
     number: false,
   });
   const [contact, setContact] = useState({});
   const [contacts, setContacts] = useState([]);
-
-  // console.log('error', error);
-  // console.log('isLoading', isLoading);
-  // console.log('isFetching', isFetching);
-  // console.log('status', status);
-
-  // console.log('contact.name', contact.name);
-  // console.log('contact.number', contact.number);
 
   useEffect(() => {
     dispatch(setIsLoading(isFetching));
@@ -69,8 +62,7 @@ export const ContactPage = () => {
     } else {
       updateContact(newContact);
       setContact(newContact);
-      toast.success(`User ${newContact.name} updated`);
-      console.log('contact-2', contact);
+      navigate('/contacts');
     }
 
     form.reset();
@@ -156,7 +148,7 @@ export const ContactPage = () => {
                 name="name"
               />
             )}
-            {contact.number && (
+            {contact.name && (
               <TextField
                 required
                 error={Boolean(errors?.number)}

@@ -1,4 +1,5 @@
 import TextField from '@mui/material/TextField';
+import PropTypes from 'prop-types';
 
 export const NameInput = ({ handleChangeName, error }) => {
   const handleChange = e => {
@@ -18,4 +19,9 @@ export const NameInput = ({ handleChangeName, error }) => {
       onChange={handleChange}
     />
   );
+};
+
+NameInput.propTypes = {
+  handleChangeName: PropTypes.func,
+  error: PropTypes.bool,
 };

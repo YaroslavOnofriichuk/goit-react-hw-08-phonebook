@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -8,17 +7,27 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { toast } from 'react-hot-toast';
 import { useLogOutUserMutation } from '../../redux/authApi';
-import { setUser, setToken, setIsLoggedIn } from '../../redux/authSlice';
+import {
+  setUser,
+  setToken,
+  setIsLoggedIn,
+  setIsLoading,
+} from '../../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export const UserMenu = () => {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [logOut] = useLogOutUserMutation();
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [logOut, { isLoading }] = useLogOutUserMutation();
   const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
   const email = useSelector(state => state.auth?.user?.email);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setIsLoading(isLoading));
+  }, [dispatch, isLoading]);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -35,7 +44,6 @@ export const UserMenu = () => {
         dispatch(setToken(null));
         dispatch(setIsLoggedIn(false));
 
-        toast.success(`User is logged out`);
         navigate('login');
       } else {
         toast.error('User not logged out');

@@ -1,4 +1,5 @@
 import TextField from '@mui/material/TextField';
+import PropTypes from 'prop-types';
 
 export const EmailInput = ({ handleChangeEmail, error }) => {
   const handleChange = e => {
@@ -18,4 +19,9 @@ export const EmailInput = ({ handleChangeEmail, error }) => {
       onChange={handleChange}
     />
   );
+};
+
+EmailInput.propTypes = {
+  handleChangeEmail: PropTypes.func,
+  error: PropTypes.bool,
 };

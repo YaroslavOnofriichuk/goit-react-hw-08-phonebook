@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -10,7 +10,12 @@ import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { NameInput } from '../../components/NameInput/NameInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
 import { useRegisterUserMutation } from '../../redux/authApi';
-import { setUser, setToken, setIsLoggedIn } from '../../redux/authSlice';
+import {
+  setUser,
+  setToken,
+  setIsLoggedIn,
+  setIsLoading,
+} from '../../redux/authSlice';
 
 export const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -21,9 +26,13 @@ export const RegisterPage = () => {
     email: false,
     password: false,
   });
-  const [registerUser] = useRegisterUserMutation();
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setIsLoading(isLoading));
+  }, [dispatch, isLoading]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -91,7 +100,6 @@ export const RegisterPage = () => {
           dispatch(setToken(user.data.token));
           dispatch(setIsLoggedIn(true));
 
-          toast.success(`User ${user.data.user.name} created`);
           navigate('/contacts');
         } else {
           toast.error('User not created');
@@ -99,10 +107,6 @@ export const RegisterPage = () => {
       } catch (err) {
         console.log(err);
       }
-
-      setName('');
-      setEmail('');
-      setPassword('');
     }
 
     form.reset();

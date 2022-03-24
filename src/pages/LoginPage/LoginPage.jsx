@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -7,7 +7,12 @@ import Typography from '@mui/material/Typography';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
 import { useLoginUserMutation } from '../../redux/authApi';
-import { setIsLoggedIn, setToken, setUser } from '../../redux/authSlice';
+import {
+  setIsLoggedIn,
+  setToken,
+  setUser,
+  setIsLoading,
+} from '../../redux/authSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,9 +23,13 @@ export const LoginPage = () => {
     email: false,
     password: false,
   });
-  const [loginUser] = useLoginUserMutation();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setIsLoading(isLoading));
+  }, [dispatch, isLoading]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -71,7 +80,6 @@ export const LoginPage = () => {
           dispatch(setIsLoggedIn(true));
           dispatch(setToken(user.data.token));
 
-          toast.success(`User ${user.data.user.name} logged in`);
           navigate('/contacts');
         } else {
           toast.error('User not logged in');
@@ -79,9 +87,6 @@ export const LoginPage = () => {
       } catch (err) {
         console.log(err);
       }
-
-      setEmail('');
-      setPassword('');
     }
 
     form.reset();

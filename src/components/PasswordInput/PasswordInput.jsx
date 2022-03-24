@@ -6,6 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import PropTypes from 'prop-types';
 
 export const PasswordInput = ({ handleChangePassword }) => {
   const [values, setValues] = React.useState({
@@ -55,4 +56,8 @@ export const PasswordInput = ({ handleChangePassword }) => {
       />
     </FormControl>
   );
+};
+
+PasswordInput.propTypes = {
+  handleChangePassword: PropTypes.func,
 };
