@@ -6,13 +6,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
-import { useLoginUserMutation } from '../../redux/authApi';
+import { useLoginUserMutation } from '../../redux/auth/authApi';
 import {
   setIsLoggedIn,
   setToken,
   setUser,
   setIsLoading,
-} from '../../redux/authSlice';
+} from '../../redux/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

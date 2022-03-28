@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setFilter } from '../../redux/phoneBookSlice';
+import { setFilter } from '../../redux/filter/phoneBookSlice';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 

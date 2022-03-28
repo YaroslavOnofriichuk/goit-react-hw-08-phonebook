@@ -6,13 +6,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { toast } from 'react-hot-toast';
-import { useLogOutUserMutation } from '../../redux/authApi';
+import { useLogOutUserMutation } from '../../redux/auth/authApi';
 import {
   setUser,
   setToken,
   setIsLoggedIn,
   setIsLoading,
-} from '../../redux/authSlice';
+} from '../../redux/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';

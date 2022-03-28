@@ -1,7 +1,7 @@
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
-import { setTheme } from '../../redux/themeSlice';
+import { setTheme } from '../../redux/theme/themeSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 export const ThemeSwitch = () => {

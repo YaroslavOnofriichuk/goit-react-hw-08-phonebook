@@ -35,54 +35,56 @@ const RegisterPage = lazy(() =>
 export function App() {
   const { pathname } = useLocation();
   const theme = useSelector(state => state.theme.theme);
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
 
   return (
-    <>
-      <ThemeProvider theme={theme ? lightTheme : darkTheme}>
-        <CssBaseline />
-        <ResponsiveAppBar />
-        <Suspense fallback={<MySkeleton pathname={pathname} />}>
-          <Routes>
-            <Route
-              index
-              path="contacts"
-              element={
-                <PrivateRoute>
-                  <ContactsPage />
-                </PrivateRoute>
-              }
-            />
+    <ThemeProvider theme={theme ? lightTheme : darkTheme}>
+      <CssBaseline />
+      <ResponsiveAppBar />
+      <Suspense fallback={<MySkeleton pathname={pathname} />}>
+        <Routes>
+          <Route
+            index
+            path="contacts"
+            element={
+              <PrivateRoute>
+                <ContactsPage />
+              </PrivateRoute>
+            }
+          />
 
-            <Route
-              path="contacts/:contactId"
-              element={
-                <PrivateRoute>
-                  <ContactPage />
-                </PrivateRoute>
-              }
-            />
+          <Route
+            path="contacts/:contactId"
+            element={
+              <PrivateRoute>
+                <ContactPage />
+              </PrivateRoute>
+            }
+          />
 
-            <Route
-              path="login"
-              element={
-                <LimitedRoute>
-                  <LoginPage />
-                </LimitedRoute>
-              }
-            />
-            <Route
-              path="register"
-              element={
-                <LimitedRoute>
-                  <RegisterPage />
-                </LimitedRoute>
-              }
-            />
-            <Route path="*" element={<ContactsPage />} />
-          </Routes>
-        </Suspense>
-        <Toaster />
-      </ThemeProvider>
-    </>
+          <Route
+            path="login"
+            element={
+              <LimitedRoute>
+                <LoginPage />
+              </LimitedRoute>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <LimitedRoute>
+                <RegisterPage />
+              </LimitedRoute>
+            }
+          />
+          <Route
+            path="*"
+            element={isLoggedIn ? <ContactsPage /> : <LoginPage />}
+          />
+        </Routes>
+      </Suspense>
+      <Toaster />
+    </ThemeProvider>
   );
 }

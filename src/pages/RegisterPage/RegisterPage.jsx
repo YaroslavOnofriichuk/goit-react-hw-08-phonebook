@@ -9,13 +9,13 @@ import Typography from '@mui/material/Typography';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { NameInput } from '../../components/NameInput/NameInput';
 import { EmailInput } from '../../components/EmailInput/EmailInput';
-import { useRegisterUserMutation } from '../../redux/authApi';
+import { useRegisterUserMutation } from '../../redux/auth/authApi';
 import {
   setUser,
   setToken,
   setIsLoggedIn,
   setIsLoading,
-} from '../../redux/authSlice';
+} from '../../redux/auth/authSlice';
 
 export const RegisterPage = () => {
   const [name, setName] = useState('');

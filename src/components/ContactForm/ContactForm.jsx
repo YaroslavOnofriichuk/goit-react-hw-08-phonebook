@@ -1,14 +1,14 @@
 import {
   useAddContactMutation,
   useGetContactsQuery,
-} from '../../redux/contactsApi';
+} from '../../redux/contacts/contactsApi';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setIsLoading } from '../../redux/authSlice';
+import { setIsLoading } from '../../redux/auth/authSlice';
 import { toast } from 'react-hot-toast';
 
 export function ContactForm() {

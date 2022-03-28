@@ -11,11 +11,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { contactsApi } from './contactsApi';
-import { authApi } from './authApi';
-import { phoneBookSlice } from './phoneBookSlice';
-import { themeSlice } from './themeSlice';
-import { authSlice } from './authSlice';
+import { contactsApi } from './contacts/contactsApi';
+import { authApi } from './auth/authApi';
+import { phoneBookSlice } from './filter/phoneBookSlice';
+import { themeSlice } from './theme/themeSlice';
+import { authSlice } from './auth/authSlice';
 
 const persistConfigAuth = {
   key: 'auth',

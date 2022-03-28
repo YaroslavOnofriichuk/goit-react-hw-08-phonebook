@@ -1,7 +1,7 @@
 import {
   useUpdateContactMutation,
   useGetContactsQuery,
-} from '../../redux/contactsApi';
+} from '../../redux/contacts/contactsApi';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { setIsLoading } from '../../redux/authSlice';
+import { setIsLoading } from '../../redux/auth/authSlice';
 import { useDispatch } from 'react-redux';
 
 export const ContactPage = () => {

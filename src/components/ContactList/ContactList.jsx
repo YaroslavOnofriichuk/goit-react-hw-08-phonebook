@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import { ContactListItem } from '../ContactListItem/ContactListItem';
-import { useGetContactsQuery } from '../../redux/contactsApi';
-import { setIsLoading } from '../../redux/authSlice';
+import { useGetContactsQuery } from '../../redux/contacts/contactsApi';
+import { setIsLoading } from '../../redux/auth/authSlice';
 
 export function ContactList() {
   const filter = useSelector(state => state.filter.filter);

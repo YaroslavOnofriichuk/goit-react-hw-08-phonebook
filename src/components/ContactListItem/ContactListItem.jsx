@@ -1,22 +1,27 @@
-import { useDeleteContactMutation } from '../../redux/contactsApi';
+import { useDeleteContactMutation } from '../../redux/contacts/contactsApi';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const ContactListItem = ({ contact }) => {
   const [deleteContact] = useDeleteContactMutation();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const handleDelete = id => {
     deleteContact(id);
   };
 
   const handleClick = id => {
-    navigate(id);
+    if (pathname.includes('contacts')) {
+      navigate(id);
+    } else {
+      navigate(`contacts/${id}`);
+    }
   };
 
   return (
